@@ -1,7 +1,7 @@
-f{% extends 'base.html' %}
+{% extends 'base.html' %}
 {% block content %}
     
     <h2>This is users page.</h2>
-    <h3>hii {{name}}.</h3>
+    <h3>hii {{name|title}}.</h3>
 
 {% endblock content %}

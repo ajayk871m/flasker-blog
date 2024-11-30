@@ -1,24 +1,62 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash
+from forms import NamerForm, Userform
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
-# from flask_sqlalchemy import SQLAlchemy
 
 # app instance
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config["SECRET_KEY"] = "Asnhcieyueaois748ycabyhiweyr93wuioewcadj"
 
-# safe: just compiles html tags
+# creating database
+db = SQLAlchemy(app)
+
+# model
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(200), nullable=False, unique=True)
+    added = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Name %r>' % self.name 
+
 
 
 # app routes
 @app.route("/")
 def home_page():
     stuff = "this is some <u>safe scripting</u> text."
-    book = ['one', 'two', 'three', 'readdhead']
+    book = ["one", "two", "three", "readdhead"]
     return render_template("index.html", stuff=stuff, book=book)
 
 
 @app.route("/user/<name>")
 def user_page(name):
     return render_template("user.html", name=name)
+
+
+@app.route("/name", methods=["GET", "POST"])
+def name():
+    name = None
+    form = NamerForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        form.name.data = ""
+        flash("Form submitted Successfully!!")
+    return render_template("name.html", name=name, form=form)
+
+
+@app.route("/user/add", methods=["GET", "POST"])
+def add_user():
+    # name = None
+    # form = NamerForm()
+    # if form.validate_on_submit():
+    #     name = form.name.data
+    #     form.name.data = ""
+    #     flash("Form submitted Successfully!!")
+    return render_template("add_user.html")
 
 
 # custom error pages
