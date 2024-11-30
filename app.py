@@ -50,13 +50,21 @@ def name():
 
 @app.route("/user/add", methods=["GET", "POST"])
 def add_user():
-    # name = None
-    # form = NamerForm()
-    # if form.validate_on_submit():
-    #     name = form.name.data
-    #     form.name.data = ""
-    #     flash("Form submitted Successfully!!")
-    return render_template("add_user.html")
+    name = None
+    form = Userform()
+    if form.validate_on_submit():
+        user = Users.query.filter_by(email=form.email.data).first()
+        if user is None:
+            user = Users(name=form.name.data, email=form.email.data)
+            db.session.add(user)
+            db.session.commit()
+        name = form.name.data
+        form.name.data = ''
+        form.email.data = ''
+        flash("User created successfully!!")
+    
+    our_users = Users.query.order_by(Users.added)
+    return render_template("add_user.html", form=form, name=name, our_users=our_users)
 
 
 # custom error pages

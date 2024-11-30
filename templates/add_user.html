@@ -1,26 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <strong>{{ message }}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    
-    {% endfor %}
+{% for message in get_flashed_messages() %}
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+    <strong>{{ message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 
-    {% if name %}
-    
-    {% else %}
-    <h2>Name form</h2>
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
+{% endfor %}
 
-        {{ form.name.label( class="form-label" ) }}
-        <br>
-        {{ form.name(class="form-control") }}
-        <br>
-        {{ form.submit(class="btn btn-info") }}
-    </form>
-    {% endif %}
+<h2>Name form</h2>
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">{{ form.name.label }}</label>
+        {{ form.name(class="form-control", id="exampleInputEmail1" ) }}
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">{{ form.email.label }}</label>
+        {{ form.email(class="form-control", id="exampleInputEmail1") }}
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    {{ form.submit(class="btn btn-info") }}
+</form>
+
+<table class="table shadow p-3 mb-5 bg-body rounded mt-4">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">E-mail</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in our_users %}
+        <tr>
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock content %}
