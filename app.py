@@ -22,7 +22,7 @@ def user_page(name):
 
 
 # custom error pages
-# 1. invalid url page
+# 1. invalid url page (C E P)
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("error/404.html", 404)
