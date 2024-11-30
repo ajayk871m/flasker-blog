@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+    <h1>This is HOMEPAGE</h1>
+    <p>{{ stuff | safe }}</p>
+
+    <ul>
+        {% for chapter in book %}
+        <li>{{ chapter }}</li>
+        {% endfor %}
+    </ul>
+    {{ book.0 }}
+{% endblock content %}
